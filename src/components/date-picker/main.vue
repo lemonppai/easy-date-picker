@@ -37,6 +37,7 @@ import './main.scss';
 import { addEvent } from '@/utils';
 
 export default {
+  name: 'LemonDatePicker',
   data() {
     return {
       dateStr: '',

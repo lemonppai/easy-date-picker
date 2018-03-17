@@ -5,7 +5,7 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
 const { SRCPATH, PUBLICPATH } = require('../config/path.conf.js');
 
-const port = 8080;
+const port = 8000;
 
 module.exports = {
   mode: 'development',
