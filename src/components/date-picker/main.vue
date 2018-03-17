@@ -33,7 +33,6 @@
 
 <script>
 import moment from 'moment';
-import './main.scss';
 import { addEvent } from '@/utils';
 
 export default {
