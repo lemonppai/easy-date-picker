@@ -2,6 +2,19 @@
 .lemon-date-picker {
   display: inline-block;
   vertical-align: middle;
+  user-select: none;
+
+  .lemon-date-picker-input {
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color .5s;
+
+    &:focus, &.active {
+      border-color: #2196f3;
+      box-shadow: 0 0 2px #2196f3;
+    }
+  }
 }
 
 .calendar {
@@ -10,12 +23,13 @@
   border: 1px solid #ccc;
   box-shadow: 0 0 6px rgba(0,0,0,.3);
   border-radius: 4px;
+  background-color: #fff;
 
   .calendar-header {
-    padding: 4px;
+    padding: 6px;
 
     .calendar-info {
-      padding: 0 10px;
+      padding: 0 5px;
     }
   }
 
@@ -24,7 +38,7 @@
       border-collapse: collapse;
 
       th, td {
-        padding: 6px;
+        padding: 4px;
         text-align: center;
         // border: 1px solid #ccc;
       }
@@ -39,6 +53,16 @@
         // 非当月，淡颜色显示
         &.not-current {
           color: #aaa;
+        }
+
+        .inner {
+          padding: 2px;
+        }
+
+        .selected {
+          border-radius: 2px;
+          color: #fff;
+          background-color:#2196f3;
         }
       }
 

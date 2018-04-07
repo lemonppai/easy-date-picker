@@ -1,6 +1,6 @@
 <template>
   <div class="lemon-date-picker">
-    <input type="text" v-model="dateStr" readonly @focus="popup">
+    <input class="lemon-date-picker-input" :class="{ active: visiable }" type="text" v-model="dateStr" readonly @focus="popup">
     <div class="calendar" v-if="visiable">
       <div class="calendar-header">
         <a href="javascript:;" @click="prevMonth">上个月</a>
@@ -21,7 +21,9 @@
           <tbody>
             <tr v-for="(item, index) in details" :key="index">
               <td v-for="(date, n2) in item" :key="n2" @click="selectDate(date)" :class="currentDate.month() == date.month() ? 'current' : 'not-current'">
-                {{ date.date() }}
+                <div class="inner" :class="{ selected: selectedDate == date.format('YYYY-MM-DD') }">
+                  {{ date.date() }}
+                </div>
               </td>
             </tr>
           </tbody>
@@ -37,14 +39,24 @@ import { addEvent } from '@/utils';
 
 export default {
   name: 'LemonDatePicker',
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
-      dateStr: '',
+      dateStr: this.value,
       visiable: false,
       dayNames: ['日', '一', '二', '三', '四', '五', '六'],
       details: [],
       currentDate: null,
-      selectedDate: null // 选择的日期
+      selectedDate: this.value || null // 选择的日期
     }
   },
   computed: {
@@ -66,7 +78,7 @@ export default {
 
     // 弹出
     popup() {
-      if (!this.visiable) {
+      if (!this.disabled && !this.visiable) {
         this.currentDate = this.selectedDate ? moment(this.selectedDate) : moment();
         this.details = this.getDetails(this.currentDate);
 
