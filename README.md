@@ -10,7 +10,23 @@ Vue.use(Components);
 
 ### 在Vue的`template`调用日期选择组件
 ```html
-<lemon-date-picker></lemon-date-picker>
+<lemon-date-picker v-model="beginDate" @change="change"></lemon-date-picker>
 ```
 
-未完，待续
+### `script`部分
+```js
+export default {
+  data() {
+    return {
+      beginDate: ''
+    }
+  },
+  methods: {
+    change(val) {
+      console.log(val);
+    }
+  }
+}
+```
+
+#### 更多功能开发中，敬请期待
