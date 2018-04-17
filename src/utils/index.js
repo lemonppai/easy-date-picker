@@ -5,7 +5,6 @@
 export const noop = () => {}
 
 /**
- *
  * @param {Element} el 页面元素
  * @param {String} type 事件类型
  * @param {Function} fn 事件函数

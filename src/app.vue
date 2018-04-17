@@ -3,7 +3,7 @@
     <h3>{{ title }}</h3>
 
     <div style="padding: 10px;">
-      普通：<lemon-date-picker v-model="dateStr1"></lemon-date-picker>
+      普通：<lemon-date-picker v-model="dateStr1" @change="change"></lemon-date-picker>
     </div>
 
     <div style="padding: 10px;">
@@ -20,6 +20,12 @@ export default {
       title: '日历组件',
       dateStr1: '2018-01-01',
       dateStr2: '2018-01-02'
+    }
+  },
+
+  methods: {
+    change(dateStr, date) {
+      console.info('选择日期', dateStr, date);
     }
   }
 }

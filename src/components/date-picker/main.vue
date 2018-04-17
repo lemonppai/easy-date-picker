@@ -4,29 +4,51 @@
     <div class="calendar" v-if="visiable">
       <div class="calendar-header">
         <a href="javascript:;" @click="prevMonth">上个月</a>
-        <span class="calendar-info">
-          {{ currentDate.format('YYYY-MM-DD') }}
+        <span class="calendar-info" @click="selectType">
+          <template v-if="currentType == 'date'">
+            {{ currentDate.format('YYYY-MM') }}
+          </template>
+
+          <template v-if="currentType == 'month'">
+            {{ currentDate.format('YYYY') }}
+          </template>
         </span>
         <a href="javascript:;" @click="nextMonth">下个月</a>
       </div>
       <div class="calendar-body">
-        <table>
+        <table v-if="currentType == 'date'">
           <thead>
             <tr>
-              <th v-for="(name, index) in dayNames" :key="index">
+              <td v-for="(name, index) in dayNames" :key="index">
                 {{ name }}
-              </th>
+              </td>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in details" :key="index">
               <td v-for="(date, n2) in item" :key="n2" @click="selectDate(date)" :class="currentDate.month() == date.month() ? 'current' : 'not-current'">
-                <div class="inner" :class="{ selected: selectedDate == date.format('YYYY-MM-DD') }">
+                <div class="inner" :class="{ selected: selectedDate.format('YYYY-MM-DD')  == date.format('YYYY-MM-DD') }">
                   {{ date.date() }}
                 </div>
               </td>
             </tr>
           </tbody>
+        </table>
+
+        <table v-if="currentType == 'month'">
+          <tbody>
+            <tr v-for="n in monthNames.length / 4">
+              <td v-for="n2 in 4">
+                <div style="padding: 5px; margin: 10px 0;" :class="{ selected: selectedDate.month() == (n - 1) * 4 + (n2 - 1) }" @click="selectMonth((n - 1) * 4 + (n2 - 1))">
+                  {{ monthNames[ (n - 1) * 4 + (n2 - 1) ] }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table v-if="currentType == 'year'">
+
         </table>
       </div>
     </div>
@@ -47,6 +69,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    type: {
+      type: String,
+      default: 'date'
     }
   },
   data() {
@@ -54,9 +80,11 @@ export default {
       dateStr: this.value,
       visiable: false,
       dayNames: ['日', '一', '二', '三', '四', '五', '六'],
+      monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      currentType: 'date',
       details: [],
       currentDate: null,
-      selectedDate: this.value || null // 选择的日期
+      selectedDate: null // 选择的日期
     }
   },
   computed: {
@@ -79,7 +107,10 @@ export default {
     // 弹出
     popup() {
       if (!this.disabled && !this.visiable) {
-        this.currentDate = this.selectedDate ? moment(this.selectedDate) : moment();
+        this.currentType = this.type;
+
+        this.selectedDate = moment(this.value);
+        this.currentDate = moment(this.value);
         this.details = this.getDetails(this.currentDate);
 
         this.show();
@@ -115,9 +146,19 @@ export default {
 
     // 选择日期
     selectDate(date) {
-      this.selectedDate = date.format('YYYY-MM-DD');
+      this.selectedDate = date;
       this.dateStr = date.format('YYYY-MM-DD');
+      // this.dateStr = date.format('YYYY-MM-DD');
+      this.$emit('input', this.dateStr);
       this.hide();
+      this.$emit('change', this.dateStr, date);
+    },
+
+    // 选择月
+    selectMonth(month) {
+      this.currentDate.month(month);
+      this.details = this.getDetails(this.currentDate);
+      this.currentType = 'date';
     },
 
     // 上个月
@@ -130,6 +171,11 @@ export default {
     nextMonth() {
       this.currentDate.add(1, 'month');
       this.details = this.getDetails(this.currentDate);
+    },
+
+    // 日期选择类型
+    selectType() {
+      this.currentType = 'month';
     },
 
     // 安装事件

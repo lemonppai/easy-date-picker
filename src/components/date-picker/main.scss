@@ -20,6 +20,7 @@
 .calendar {
   position: fixed;
   margin-top: 4px;
+  padding: 6px;
   border: 1px solid #ccc;
   box-shadow: 0 0 6px rgba(0,0,0,.3);
   border-radius: 4px;
@@ -29,47 +30,49 @@
     padding: 6px;
 
     .calendar-info {
-      padding: 0 5px;
+      display: inline-block;
+      width: 128px;
+      text-align: center;
     }
   }
 
   .calendar-body {
+    margin-top: 4px;
     table {
       border-collapse: collapse;
 
       th, td {
-        padding: 4px;
+        padding: 6px;
         text-align: center;
         // border: 1px solid #ccc;
       }
 
-      td {
-        cursor: pointer;
-
-        &.current {
-
-        }
-
-        // 非当月，淡颜色显示
-        &.not-current {
-          color: #aaa;
-        }
-
-        .inner {
-          padding: 2px;
-        }
-
-        .selected {
-          border-radius: 2px;
-          color: #fff;
-          background-color:#2196f3;
-        }
+      thead {
+        border-bottom: 1px solid #eee;
       }
 
       tbody {
         tr {
           // height: 20px;
         }
+
+        td {
+          cursor: pointer;
+          &.current {}
+          // 非当月，淡颜色显示
+          &.not-current {
+            color: #aaa;
+          }
+          .inner {
+            padding: 2px;
+          }
+          .selected {
+            border-radius: 2px;
+            color: #fff;
+            background-color: #2196f3;
+          }
+        }
+
       }
     }
   }
